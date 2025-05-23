@@ -66,7 +66,7 @@ final readonly class Pdftk
 
         $fields = [];
 
-        $fieldsData = (explode("---", trim($output)));
+        $fieldsData = explode("---", trim($output));
         $fieldsData = array_filter($fieldsData);
         foreach ($fieldsData as $fieldData) {
             $fieldParts = explode("\n", $fieldData);
@@ -126,6 +126,132 @@ final readonly class Pdftk
         }
 
         return $fields;
+    }
+
+    /**
+     * Assembles ("catenates") pages from input PDFs to create a new PDF.
+     *
+     * @param string ...$pdfFilePaths
+     * @return string
+     */
+    public function cat(string ...$pdfFilePaths): string
+    {
+        $executablePath = $this->executablePath ?? $this->findExecutablePath();
+
+        $command = [$executablePath];
+
+        foreach ($pdfFilePaths as $pdfFilePath) {
+            $command[] = $pdfFilePath;
+        }
+
+        $command[] = 'cat';
+        $command[] = 'output';
+        $command[] = '-';
+
+        $process = new Process($command);
+        $process->run();
+
+        if (false === $process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        return $process->getOutput();
+    }
+
+    public function dumpData(string $pdfFilePath): Report
+    {
+        $executablePath = $this->executablePath ?? $this->findExecutablePath();
+
+        $command = [$executablePath, $pdfFilePath, 'dump_data'];
+
+        $process = new Process($command);
+        $process->run();
+
+        if (false === $process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        $output = $process->getOutput();
+
+        $lines = explode("\n", trim($output));
+        $pdfID0 = null;
+        $pdfID1 = null;
+        $numberOfPages = null;
+        $bookmarks = [];
+        $infos = [];
+        $pageMedias = [];
+
+        $currentSection = null;
+
+        $infoCount = 0;
+        $bookmarkCount = 0;
+        $pageMediaCount = 0;
+        foreach ($lines as $line) {
+            $line = trim($line);
+
+            if ('InfoBegin' === $line) {
+                $currentSection = 'info';
+                $infoCount++;
+
+                continue;
+            }
+
+            if ('BookmarkBegin' === $line) {
+                $currentSection = 'bookmark';
+                $bookmarkCount++;
+
+                continue;
+            }
+
+            if ('PageMediaBegin' === $line) {
+                $currentSection = 'pageMedia';
+                $pageMediaCount++;
+
+                continue;
+            }
+
+            if (str_starts_with($line, 'PdfID0')) {
+                [,$value] = explode(':', $line, 2);
+                $pdfID0 = trim($value);
+
+                continue;
+            }
+
+            if (str_starts_with($line, 'PdfID1')) {
+                [,$value] = explode(':', $line, 2);
+                $pdfID1 = trim($value);
+
+                continue;
+            }
+
+            if (str_starts_with($line, 'NumberOfPages')) {
+                [,$value] = explode(':', $line, 2);
+                $numberOfPages = (int) trim($value);
+
+                continue;
+            }
+
+            if ('info' === $currentSection) {
+                [$key, $value] = explode(':', $line, 2);
+                $infos[$infoCount][$key] = trim($value);
+            }
+
+            if ('bookmark' === $currentSection) {
+                [$key, $value] = explode(':', $line, 2);
+                $bookmarks[$bookmarkCount][$key] = trim($value);
+            }
+
+            if ('pageMedia' === $currentSection) {
+                [$key, $value] = explode(':', $line, 2);
+                $pageMedias[$pageMediaCount][$key] = trim($value);
+            }
+        }
+
+        // todo transform array to array of objects
+
+        return new Report(
+            infos: $infos,
+        );
     }
 
     private function findExecutablePath(): string

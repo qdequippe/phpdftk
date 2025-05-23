@@ -62,4 +62,28 @@ final class PdftkTest extends TestCase
         $this->assertEquals(3, $countText);
         $this->assertEquals(1, $countChoice);
     }
+
+    public function testCat(): void
+    {
+        // Arrange
+        $pdftk = new Pdftk();
+
+        // Act
+        $pdftk->cat(__DIR__ . '/data/form.pdf', __DIR__ . '/data/sample.pdf');
+
+        // Assert
+        $this->expectNotToPerformAssertions();
+    }
+
+    public function testDumpData(): void
+    {
+        // Arrange
+        $pdftk = new Pdftk();
+
+        // Act
+        $pdfInfo = $pdftk->dumpData(__DIR__ . '/data/form.pdf');
+
+        // Assert
+        $this->expectNotToPerformAssertions();
+    }
 }
