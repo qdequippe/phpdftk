@@ -308,6 +308,13 @@ final readonly class Pdftk
         );
     }
 
+    /**
+     * Reads a single input PDF file and generates an FDF file suitable for fill_form.
+     *
+     * @param string $pdfFilePath Filepath to a PDF file
+     *
+     * @return string FDF file generated from input PDF
+     */
     public function generateFdf(string $pdfFilePath): string
     {
         $executablePath = $this->executablePath ?? $this->findExecutablePath();
