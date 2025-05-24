@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Qdequippe\PHPDFtk;
 
 use Qdequippe\PHPDFtk\Exception\ExecutableNotFoundException;
@@ -207,7 +209,6 @@ final readonly class Pdftk
      * @param string $pdfFilePath Filepath to a PDF file
      * @param bool $utf8 Output is encoded as UTF-8
      *
-     * @return Report
      *
      * @throws ProcessFailedException
      */
@@ -250,21 +251,21 @@ final readonly class Pdftk
 
             if ('InfoBegin' === $line) {
                 $currentSection = 'info';
-                $infoCount++;
+                ++$infoCount;
 
                 continue;
             }
 
             if ('BookmarkBegin' === $line) {
                 $currentSection = 'bookmark';
-                $bookmarkCount++;
+                ++$bookmarkCount;
 
                 continue;
             }
 
             if ('PageMediaBegin' === $line) {
                 $currentSection = 'pageMedia';
-                $pageMediaCount++;
+                ++$pageMediaCount;
 
                 continue;
             }
@@ -326,10 +327,10 @@ final readonly class Pdftk
         $pageMedias = [];
         foreach ($pageMediasData as $pageMediaData) {
             $rect = explode(' ', $pageMediaData['PageMediaRect']);
-            array_walk($rect, static fn(&$value) => $value = (int) $value);
+            array_walk($rect, static fn(&$value): int => $value = (int) $value);
 
             $dimensions = explode(' ', $pageMediaData['PageMediaDimensions']);
-            array_walk($dimensions, static fn(&$value) => $value = (int) $value);
+            array_walk($dimensions, static fn(&$value): int => $value = (int) $value);
 
             $pageMedias[] = new PageMedia(
                 number: (int) $pageMediaData['PageMediaNumber'],
@@ -384,7 +385,6 @@ final readonly class Pdftk
      * @param string|null $outputDir Output directory (default: system temp dir)
      * @param string $pageNamePrefixOutput Prefix for the output page filenames (default: page_)
      *
-     * @return void
      *
      * @throws ProcessFailedException
      */
