@@ -308,6 +308,22 @@ final readonly class Pdftk
         );
     }
 
+    public function generateFdf(string $pdfFilePath): string
+    {
+        $executablePath = $this->executablePath ?? $this->findExecutablePath();
+
+        $command = [$executablePath, $pdfFilePath, 'generate_fdf', 'output', '-'];
+
+        $process = new Process($command);
+        $process->run();
+
+        if (false === $process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        return $process->getOutput();
+    }
+
     private function findExecutablePath(): string
     {
         $executableFinder = new ExecutableFinder();
