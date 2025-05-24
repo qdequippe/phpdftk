@@ -138,7 +138,7 @@ final readonly class Pdftk
                     $field = new Button(
                         name: $parts['FieldName'],
                         nameAlt: $parts['FieldNameAlt'] ?? null,
-                        flags: $parts['FieldFlags'] ?? null,
+                        flags: $parts['FieldFlags'] ? (int) $parts['FieldFlags'] : null,
                         justification: $parts['FieldJustification'] ?? null,
                         value: $parts['FieldValue'] ?? null,
                         stateOption: $parts['FieldStateOption'] ?? [],
@@ -148,7 +148,7 @@ final readonly class Pdftk
                     $field = new Choice(
                         name: $parts['FieldName'],
                         nameAlt: $parts['FieldNameAlt'] ?? null,
-                        flags: $parts['FieldFlags'] ?? null,
+                        flags: $parts['FieldFlags'] ? (int) $parts['FieldFlags'] : null,
                         justification: $parts['FieldJustification'] ?? null,
                         value: $parts['FieldValue'] ?? null,
                         valueDefault: $parts['FieldValueDefault'] ?? null,
@@ -320,7 +320,7 @@ final readonly class Pdftk
             $bookmarks[] = new Bookmark(
                 title: $bookmarkData['BookmarkTitle'],
                 level: (int) $bookmarkData['BookmarkLevel'],
-                pageNumber: $bookmarkData['BookmarkPageNumber'],
+                pageNumber: (int) $bookmarkData['BookmarkPageNumber'],
             );
         }
 
