@@ -7,7 +7,7 @@ final readonly class Report
     /**
      * @var Info[]
      */
-   private array $infos;
+    private array $infos;
 
     private ?int $numberOfPages;
 

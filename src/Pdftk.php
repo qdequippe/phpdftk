@@ -46,14 +46,20 @@ final readonly class Pdftk
     }
 
     /**
-     * @param string $pdfFilePath
+     * Reads a single input PDF file and reports form field statistics.
+     *
+     * @param string $pdfFilePath Filepath to a PDF file
+     * @param bool $utf8 Output is encoded as UTF-8
+     *
      * @return FieldInterface[]
      */
-    public function dumpDataFields(string $pdfFilePath): array
+    public function dumpDataFields(string $pdfFilePath, bool $utf8 = true): array
     {
         $executablePath = $this->executablePath ?? $this->findExecutablePath();
 
-        $command = [$executablePath, $pdfFilePath, 'dump_data_fields_utf8', 'output', '-'];
+        $operation = $utf8 ? 'dump_data_fields_utf8' : 'dump_data_fields';
+
+        $command = [$executablePath, $pdfFilePath, $operation, 'output', '-'];
 
         $process = new Process($command);
         $process->run();
@@ -131,8 +137,9 @@ final readonly class Pdftk
     /**
      * Assembles ("catenates") pages from input PDFs to create a new PDF.
      *
-     * @param string ...$pdfFilePaths
-     * @return string
+     * @param string ...$pdfFilePaths Filepath to PDF files.
+     *
+     * @return string PDF concatenated from input PDFs
      */
     public function cat(string ...$pdfFilePaths): string
     {
@@ -158,11 +165,21 @@ final readonly class Pdftk
         return $process->getOutput();
     }
 
-    public function dumpData(string $pdfFilePath): Report
+    /**
+     * Reads a single input PDF file and reports its metadata, bookmarks (a/k/a outlines), page metrics (media, rotation and labels) and other data.
+     *
+     * @param string $pdfFilePath Filepath to a PDF file
+     * @param bool $utf8 Output is encoded as UTF-8
+     *
+     * @return Report
+     */
+    public function dumpData(string $pdfFilePath, bool $utf8 = true): Report
     {
         $executablePath = $this->executablePath ?? $this->findExecutablePath();
 
-        $command = [$executablePath, $pdfFilePath, 'dump_data'];
+        $operation = $utf8 ? 'dump_data_utf8' : 'dump_data';
+
+        $command = [$executablePath, $pdfFilePath, $operation];
 
         $process = new Process($command);
         $process->run();
@@ -177,15 +194,16 @@ final readonly class Pdftk
         $pdfID0 = null;
         $pdfID1 = null;
         $numberOfPages = null;
-        $bookmarks = [];
-        $infos = [];
-        $pageMedias = [];
+        $bookmarksData = [];
+        $infosData = [];
+        $pageMediasData = [];
 
         $currentSection = null;
 
         $infoCount = 0;
         $bookmarkCount = 0;
         $pageMediaCount = 0;
+
         foreach ($lines as $line) {
             $line = trim($line);
 
@@ -233,24 +251,60 @@ final readonly class Pdftk
 
             if ('info' === $currentSection) {
                 [$key, $value] = explode(':', $line, 2);
-                $infos[$infoCount][$key] = trim($value);
+                $infosData[$infoCount][$key] = trim($value);
             }
 
             if ('bookmark' === $currentSection) {
                 [$key, $value] = explode(':', $line, 2);
-                $bookmarks[$bookmarkCount][$key] = trim($value);
+                $bookmarksData[$bookmarkCount][$key] = trim($value);
             }
 
             if ('pageMedia' === $currentSection) {
                 [$key, $value] = explode(':', $line, 2);
-                $pageMedias[$pageMediaCount][$key] = trim($value);
+                $pageMediasData[$pageMediaCount][$key] = trim($value);
             }
         }
 
-        // todo transform array to array of objects
+        $infos = [];
+        foreach ($infosData as $infoData) {
+            $infos[] = new Info(
+                key: $infoData['InfoKey'],
+                value: $infoData['InfoValue'],
+            );
+        }
+
+        $bookmarks = [];
+        foreach ($bookmarksData as $bookmarkData) {
+            $bookmarks[] = new Bookmark(
+                title: $bookmarkData['BookmarkTitle'],
+                level: (int) $bookmarkData['BookmarkLevel'],
+                pageNumber: $bookmarkData['BookmarkPageNumber'],
+            );
+        }
+
+        $pageMedias = [];
+        foreach ($pageMediasData as $pageMediaData) {
+            $rect = explode(' ', $pageMediaData['PageMediaRect']);
+            array_walk($rect, static fn(&$value) => $value = (int) $value);
+
+            $dimensions = explode(' ', $pageMediaData['PageMediaDimensions']);
+            array_walk($dimensions, static fn(&$value) => $value = (int) $value);
+
+            $pageMedias[] = new PageMedia(
+                number: (int) $pageMediaData['PageMediaNumber'],
+                rotation: (int) $pageMediaData['PageMediaRotation'],
+                rect: $rect,
+                dimensions: $dimensions,
+            );
+        }
 
         return new Report(
             infos: $infos,
+            pdfID0: $pdfID0,
+            pdfID1: $pdfID1,
+            numberOfPages: $numberOfPages,
+            bookmarks: $bookmarks,
+            pageMedias: $pageMedias,
         );
     }
 

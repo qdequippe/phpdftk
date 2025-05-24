@@ -18,3 +18,5 @@ cs_check:
 
 test:
 	$(DOCKER_COMPOSE) run --rm php ./vendor/bin/phpunit --no-coverage
+
+quality: cs_fix test
