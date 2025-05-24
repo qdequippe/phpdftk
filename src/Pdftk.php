@@ -331,6 +331,15 @@ final readonly class Pdftk
         return $process->getOutput();
     }
 
+    /**
+     * Splits a single input PDF document into individual pages. Also creates a report named doc_data.txt which is the same as the output from dump_data.
+     *
+     * @param string $pdfFilePath Filepath to a PDF file
+     * @param string|null $outputDir Output directory (default: system temp dir)
+     * @param string $pageNamePrefixOutput Prefix for the output page filenames (default: page_)
+     *
+     * @return void
+     */
     public function burst(string $pdfFilePath, string $outputDir = null, string $pageNamePrefixOutput = 'page_'): void
     {
         $executablePath = $this->executablePath ?? $this->findExecutablePath();
