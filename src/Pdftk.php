@@ -331,6 +331,22 @@ final readonly class Pdftk
         return $process->getOutput();
     }
 
+    public function burst(string $pdfFilePath, string $outputDir = null, string $pageNamePrefixOutput = 'page_'): void
+    {
+        $executablePath = $this->executablePath ?? $this->findExecutablePath();
+
+        $outputDir ??= sys_get_temp_dir();
+
+        $command = [$executablePath, $pdfFilePath, 'burst', 'output', sprintf('%s/%s%%02d.pdf', $outputDir, $pageNamePrefixOutput)];
+
+        $process = new Process($command);
+        $process->run();
+
+        if (false === $process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+    }
+
     private function findExecutablePath(): string
     {
         $executableFinder = new ExecutableFinder();
