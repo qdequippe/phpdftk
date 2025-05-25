@@ -2,7 +2,7 @@ DOCKER_COMPOSE=docker compose
 PHP_CS_FIXER=./vendor/bin/php-cs-fixer
 
 build:
-	$(DOCKER_COMPOSE) build
+	COMPOSE_BAKE=true $(DOCKER_COMPOSE) build
 
 bash:
 	$(DOCKER_COMPOSE) run -it --rm php bash
