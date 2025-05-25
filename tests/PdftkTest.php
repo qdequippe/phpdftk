@@ -154,12 +154,12 @@ final class PdftkTest extends TestCase
         $pdftk = new Pdftk();
 
         // Act
-        $pdftk->burst(__DIR__ . '/data/sample-multi-pages.pdf', 'build');
+        $pdftk->burst(__DIR__ . '/data/sample-multi-pages.pdf',);
 
         // Assert
-        $this->assertFileExists('build/page_01.pdf');
-        $this->assertFileExists('build/page_02.pdf');
-        $this->assertFileExists('build/page_03.pdf');
+        $this->assertFileExists(sys_get_temp_dir().'/page_01.pdf');
+        $this->assertFileExists(sys_get_temp_dir().'/page_02.pdf');
+        $this->assertFileExists(sys_get_temp_dir().'/page_03.pdf');
     }
 
     public function testUncompress(): void

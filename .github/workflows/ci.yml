@@ -36,7 +36,7 @@ jobs:
                   working-directory: "tools/rector"
 
             - name: Rector
-              run: ./tools/bin/rector --dryn-run
+              run: ./tools/bin/rector --dry-run
 
     test:
         runs-on: ubuntu-latest
