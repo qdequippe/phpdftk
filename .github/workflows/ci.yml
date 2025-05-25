@@ -33,7 +33,7 @@ jobs:
 
             - uses: "ramsey/composer-install@v3"
               with:
-                  working-directory: "packages/acme-foo"
+                  working-directory: "tools/rector"
 
             - name: Rector
               run: ./tools/bin/rector --dryn-run

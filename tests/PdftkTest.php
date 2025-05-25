@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Qdequippe\PHPDFtk\Tests;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Qdequippe\PHPDFtk\Exception\ProcessFailedException;
 use Qdequippe\PHPDFtk\Field\Type;
 use Qdequippe\PHPDFtk\Pdftk;
 
+#[CoversClass(className: Pdftk::class)]
 final class PdftkTest extends TestCase
 {
     public function testProcessFailed(): void
