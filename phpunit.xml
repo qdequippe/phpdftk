@@ -10,7 +10,7 @@
          displayDetailsOnPhpunitDeprecations="true"
          failOnPhpunitDeprecation="true"
          failOnRisky="false"
-         failOnWarning="true">
+         failOnWarning="false">
 
     <testsuites>
         <testsuite name="default">

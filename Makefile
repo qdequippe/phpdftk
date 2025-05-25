@@ -20,6 +20,9 @@ cs_check:
 test:
 	$(DOCKER_COMPOSE) run --rm php ./vendor/bin/phpunit
 
+coverage:
+	$(DOCKER_COMPOSE) run --rm -e XDEBUG_MODE=coverage  php ./vendor/bin/phpunit --coverage-clover coverage.xml
+
 phpstan:
 	$(DOCKER_COMPOSE) run --rm php ./vendor/bin/phpstan analyse
 
