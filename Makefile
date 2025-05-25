@@ -1,5 +1,6 @@
 DOCKER_COMPOSE=docker compose
 PHP_CS_FIXER=./vendor/bin/php-cs-fixer
+RECTOR=./tools/bin/rector
 
 build:
 	COMPOSE_BAKE=true $(DOCKER_COMPOSE) build
@@ -26,9 +27,9 @@ phpstan-baseline:
 	$(DOCKER_COMPOSE) run --rm php ./vendor/bin/phpstan analyse -b
 
 rector:
-	$(DOCKER_COMPOSE) run --rm php ./vendor/bin/rector --dry-run
+	$(DOCKER_COMPOSE) run --rm php $(RECTOR) --dry-run
 
 rectify:
-	$(DOCKER_COMPOSE) run --rm php ./vendor/bin/rector
+	$(DOCKER_COMPOSE) run --rm php $(RECTOR)
 
 quality: rector cs_check test

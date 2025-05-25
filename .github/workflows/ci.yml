@@ -32,9 +32,11 @@ jobs:
                   php-version: '8.3'
 
             - uses: "ramsey/composer-install@v3"
+              with:
+                  working-directory: "packages/acme-foo"
 
-            - name: PHP CS Fixer
-              run: ./vendor/bin/rector
+            - name: Rector
+              run: ./tools/bin/rector --dryn-run
 
     test:
         runs-on: ubuntu-latest
@@ -66,4 +68,4 @@ jobs:
             - name: Upload coverage to Codecov
               uses: codecov/codecov-action@v5
               env:
-                  CODECOV_TOKEN: ${{ secrets.CODECOV_ORG_TOKEN }}
+                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
