@@ -8,15 +8,15 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Qdequippe\PHPDFtk\Exception\ProcessFailedException;
 use Qdequippe\PHPDFtk\Field\Type;
-use Qdequippe\PHPDFtk\Pdftk;
+use Qdequippe\PHPDFtk\PDFtk;
 
-#[CoversClass(className: Pdftk::class)]
-final class PdftkTest extends TestCase
+#[CoversClass(PDFtk::class)]
+final class PDFtkTest extends TestCase
 {
     public function testProcessFailed(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         // Assert
         $this->expectException(ProcessFailedException::class);
@@ -32,7 +32,7 @@ final class PdftkTest extends TestCase
     public function testFormFill(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         $inputFilePath = __DIR__ . '/data/form.pdf';
         $formDataFilePath = __DIR__ . '/data/form_date.xfdf';
@@ -50,7 +50,7 @@ final class PdftkTest extends TestCase
     public function testDumpDataFields(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         $inputFilePath = __DIR__ . '/data/form.pdf';
 
@@ -87,7 +87,7 @@ final class PdftkTest extends TestCase
     public function testCat(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         // Act
         $result = $pdftk->cat(pdfFilePaths: [__DIR__ . '/data/form.pdf', __DIR__ . '/data/sample.pdf']);
@@ -103,7 +103,7 @@ final class PdftkTest extends TestCase
     public function testExtractSpecificPagesFromSingleFile(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         // Act
         $result = $pdftk->cat(
@@ -122,7 +122,7 @@ final class PdftkTest extends TestCase
     public function testDumpData(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         // Act
         $report = $pdftk->dumpData(__DIR__ . '/data/sample.pdf');
@@ -139,7 +139,7 @@ final class PdftkTest extends TestCase
     public function testGenerateFdf(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         // Act
         $fdf = $pdftk->generateFdf(__DIR__ . '/data/form.pdf');
@@ -151,21 +151,21 @@ final class PdftkTest extends TestCase
     public function testBurst(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         // Act
-        $pdftk->burst(__DIR__ . '/data/sample-multi-pages.pdf',);
+        $pdftk->burst(__DIR__ . '/data/sample-multi-pages.pdf', );
 
         // Assert
-        $this->assertFileExists(sys_get_temp_dir().'/page_01.pdf');
-        $this->assertFileExists(sys_get_temp_dir().'/page_02.pdf');
-        $this->assertFileExists(sys_get_temp_dir().'/page_03.pdf');
+        $this->assertFileExists(sys_get_temp_dir() . '/page_01.pdf');
+        $this->assertFileExists(sys_get_temp_dir() . '/page_02.pdf');
+        $this->assertFileExists(sys_get_temp_dir() . '/page_03.pdf');
     }
 
     public function testUncompress(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         // Act
         $uncompressed = $pdftk->uncompress(__DIR__ . '/data/sample.pdf');
@@ -180,7 +180,7 @@ final class PdftkTest extends TestCase
     public function testCompress(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         // Act
         $compressed = $pdftk->compress(__DIR__ . '/data/sample.pdf');
@@ -195,7 +195,7 @@ final class PdftkTest extends TestCase
     public function testRepair(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         // Act
         $repaired = $pdftk->repair(__DIR__ . '/data/sample.pdf');
@@ -210,7 +210,7 @@ final class PdftkTest extends TestCase
     public function testBackground(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         // Act
         $result = $pdftk->background(
@@ -228,7 +228,7 @@ final class PdftkTest extends TestCase
     public function testStamp(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         // Act
         $result = $pdftk->stamp(
@@ -246,7 +246,7 @@ final class PdftkTest extends TestCase
     public function testRotate(): void
     {
         // Arrange
-        $pdftk = new Pdftk();
+        $pdftk = new PDFtk();
 
         // Act
         $result = $pdftk->rotate(
