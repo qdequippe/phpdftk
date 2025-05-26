@@ -28,8 +28,8 @@ final readonly class Report
     private array $pageMedias;
 
     /**
-     * @param Info[] $infos
-     * @param Bookmark[] $bookmarks
+     * @param Info[]      $infos
+     * @param Bookmark[]  $bookmarks
      * @param PageMedia[] $pageMedias
      */
     public function __construct(

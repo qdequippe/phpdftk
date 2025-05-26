@@ -1,13 +1,15 @@
 <?php
 
 $finder = (new PhpCsFixer\Finder())
-    ->in(__DIR__)
+    ->files()
+    ->in(__DIR__ . '/src')
+    ->in(__DIR__ . '/tests')
 ;
 
 return (new PhpCsFixer\Config())
+    ->setRiskyAllowed(true)
     ->setRules([
-        '@PER-CS' => true,
-        '@PHP82Migration' => true,
+        '@Symfony' => true,
     ])
     ->setFinder($finder)
     ;
