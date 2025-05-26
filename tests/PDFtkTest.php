@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Qdequippe\PHPDFtk\Tests;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use Qdequippe\PHPDFtk\Exception\ProcessFailedException;
 use Qdequippe\PHPDFtk\Field\Type;
@@ -13,6 +14,22 @@ use Qdequippe\PHPDFtk\PDFtk;
 #[CoversClass(PDFtk::class)]
 final class PDFtkTest extends TestCase
 {
+    #[DoesNotPerformAssertions]
+    public function testExecutablePath(): void
+    {
+        // Arrange
+        $pdftk = new PDFtk(executablePath: '/usr/bin/pdftk');
+
+        $inputFilePath = __DIR__.'/data/form.pdf';
+        $formDataFilePath = __DIR__.'/data/form_date.xfdf';
+
+        // Act
+        $pdftk->fillForm(
+            pdfFilePath: $inputFilePath,
+            formDataFilePath: $formDataFilePath,
+        );
+    }
+
     public function testProcessFailed(): void
     {
         // Arrange

@@ -11,5 +11,4 @@ RUN pecl install xdebug \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Définir le dossier de travail
 WORKDIR /app
