@@ -34,8 +34,8 @@ final class PDFtkTest extends TestCase
         // Arrange
         $pdftk = new PDFtk();
 
-        $inputFilePath = __DIR__ . '/data/form.pdf';
-        $formDataFilePath = __DIR__ . '/data/form_date.xfdf';
+        $inputFilePath = __DIR__.'/data/form.pdf';
+        $formDataFilePath = __DIR__.'/data/form_date.xfdf';
 
         // Act
         $data = $pdftk->fillForm(
@@ -44,7 +44,7 @@ final class PDFtkTest extends TestCase
         );
 
         // Assert
-        $this->assertStringEqualsFile(__DIR__ . '/data/output.pdf', $data);
+        $this->assertStringEqualsFile(__DIR__.'/data/output.pdf', $data);
     }
 
     public function testDumpDataFields(): void
@@ -52,7 +52,7 @@ final class PDFtkTest extends TestCase
         // Arrange
         $pdftk = new PDFtk();
 
-        $inputFilePath = __DIR__ . '/data/form.pdf';
+        $inputFilePath = __DIR__.'/data/form.pdf';
 
         // Act
         $fields = $pdftk->dumpDataFields(
@@ -90,10 +90,10 @@ final class PDFtkTest extends TestCase
         $pdftk = new PDFtk();
 
         // Act
-        $result = $pdftk->cat(pdfFilePaths: [__DIR__ . '/data/form.pdf', __DIR__ . '/data/sample.pdf']);
+        $result = $pdftk->cat(pdfFilePaths: [__DIR__.'/data/form.pdf', __DIR__.'/data/sample.pdf']);
 
         // Assert
-        $filename = sys_get_temp_dir() . '/result.pdf';
+        $filename = sys_get_temp_dir().'/result.pdf';
         file_put_contents($filename, $result);
         $report = $pdftk->dumpData($filename);
 
@@ -107,12 +107,12 @@ final class PDFtkTest extends TestCase
 
         // Act
         $result = $pdftk->cat(
-            pdfFilePaths: [__DIR__ . '/data/sample-multi-pages.pdf'],
+            pdfFilePaths: [__DIR__.'/data/sample-multi-pages.pdf'],
             pageRanges: ['1', '3']
         );
 
         // Assert
-        $filename = sys_get_temp_dir() . '/result_cat_multiple_page.pdf';
+        $filename = sys_get_temp_dir().'/result_cat_multiple_page.pdf';
         file_put_contents($filename, $result);
         $report = $pdftk->dumpData($filename);
 
@@ -125,7 +125,7 @@ final class PDFtkTest extends TestCase
         $pdftk = new PDFtk();
 
         // Act
-        $report = $pdftk->dumpData(__DIR__ . '/data/sample.pdf');
+        $report = $pdftk->dumpData(__DIR__.'/data/sample.pdf');
 
         // Assert
         $this->assertSame(1, $report->getNumberOfPages());
@@ -142,10 +142,10 @@ final class PDFtkTest extends TestCase
         $pdftk = new PDFtk();
 
         // Act
-        $fdf = $pdftk->generateFdf(__DIR__ . '/data/form.pdf');
+        $fdf = $pdftk->generateFdf(__DIR__.'/data/form.pdf');
 
         // Assert
-        $this->assertStringEqualsFile(__DIR__ . '/data/expected.fdf', $fdf);
+        $this->assertStringEqualsFile(__DIR__.'/data/expected.fdf', $fdf);
     }
 
     public function testBurst(): void
@@ -154,12 +154,12 @@ final class PDFtkTest extends TestCase
         $pdftk = new PDFtk();
 
         // Act
-        $pdftk->burst(__DIR__ . '/data/sample-multi-pages.pdf', );
+        $pdftk->burst(__DIR__.'/data/sample-multi-pages.pdf');
 
         // Assert
-        $this->assertFileExists(sys_get_temp_dir() . '/page_01.pdf');
-        $this->assertFileExists(sys_get_temp_dir() . '/page_02.pdf');
-        $this->assertFileExists(sys_get_temp_dir() . '/page_03.pdf');
+        $this->assertFileExists(sys_get_temp_dir().'/page_01.pdf');
+        $this->assertFileExists(sys_get_temp_dir().'/page_02.pdf');
+        $this->assertFileExists(sys_get_temp_dir().'/page_03.pdf');
     }
 
     public function testUncompress(): void
@@ -168,11 +168,11 @@ final class PDFtkTest extends TestCase
         $pdftk = new PDFtk();
 
         // Act
-        $uncompressed = $pdftk->uncompress(__DIR__ . '/data/sample.pdf');
+        $uncompressed = $pdftk->uncompress(__DIR__.'/data/sample.pdf');
 
         // Assert
         $this->assertStringEqualsFile(
-            __DIR__ . '/data/sample_uncompressed.pdf',
+            __DIR__.'/data/sample_uncompressed.pdf',
             $uncompressed,
         );
     }
@@ -183,11 +183,11 @@ final class PDFtkTest extends TestCase
         $pdftk = new PDFtk();
 
         // Act
-        $compressed = $pdftk->compress(__DIR__ . '/data/sample.pdf');
+        $compressed = $pdftk->compress(__DIR__.'/data/sample.pdf');
 
         // Assert
         $this->assertStringEqualsFile(
-            __DIR__ . '/data/sample_compressed.pdf',
+            __DIR__.'/data/sample_compressed.pdf',
             $compressed,
         );
     }
@@ -198,11 +198,11 @@ final class PDFtkTest extends TestCase
         $pdftk = new PDFtk();
 
         // Act
-        $repaired = $pdftk->repair(__DIR__ . '/data/sample.pdf');
+        $repaired = $pdftk->repair(__DIR__.'/data/sample.pdf');
 
         // Assert
         $this->assertStringEqualsFile(
-            __DIR__ . '/data/sample_repaired.pdf',
+            __DIR__.'/data/sample_repaired.pdf',
             $repaired,
         );
     }
@@ -214,13 +214,13 @@ final class PDFtkTest extends TestCase
 
         // Act
         $result = $pdftk->background(
-            __DIR__ . '/data/form.pdf',
-            __DIR__ . '/data/sample.pdf'
+            __DIR__.'/data/form.pdf',
+            __DIR__.'/data/sample.pdf'
         );
 
         // Assert
         $this->assertStringEqualsFile(
-            __DIR__ . '/data/background.pdf',
+            __DIR__.'/data/background.pdf',
             $result,
         );
     }
@@ -232,13 +232,13 @@ final class PDFtkTest extends TestCase
 
         // Act
         $result = $pdftk->stamp(
-            __DIR__ . '/data/form.pdf',
-            __DIR__ . '/data/sample.pdf'
+            __DIR__.'/data/form.pdf',
+            __DIR__.'/data/sample.pdf'
         );
 
         // Assert
         $this->assertStringEqualsFile(
-            __DIR__ . '/data/stamp.pdf',
+            __DIR__.'/data/stamp.pdf',
             $result,
         );
     }
@@ -250,13 +250,13 @@ final class PDFtkTest extends TestCase
 
         // Act
         $result = $pdftk->rotate(
-            __DIR__ . '/data/sample-multi-pages.pdf',
+            __DIR__.'/data/sample-multi-pages.pdf',
             ['1east', '2-end'],
         );
 
         // Assert
         $this->assertStringEqualsFile(
-            __DIR__ . '/data/rotate.pdf',
+            __DIR__.'/data/rotate.pdf',
             $result,
         );
     }

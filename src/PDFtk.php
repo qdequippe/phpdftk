@@ -21,7 +21,8 @@ final readonly class PDFtk
 {
     public function __construct(
         private ?string $executablePath = null,
-    ) {}
+    ) {
+    }
 
     private function getExecutablePath(): string
     {
@@ -57,13 +58,13 @@ final readonly class PDFtk
     /**
      * Fills the input PDF’s form fields with the data from an FDF file or XFDF file.
      *
-     * @param string $pdfFilePath Filepath to a PDF file
+     * @param string $pdfFilePath      Filepath to a PDF file
      * @param string $formDataFilePath Filepath to the form data
-     * @param bool $flatten Use this option to merge an input PDF’s interactive form fields (and their data) with the PDF’s pages.
+     * @param bool   $flatten          use this option to merge an input PDF’s interactive form fields (and their data) with the PDF’s pages
      *
      * @return string PDF filled with form data
      *
-     * @throws ProcessFailedException If the process execution is unsuccessful.
+     * @throws ProcessFailedException if the process execution is unsuccessful
      */
     public function fillForm(string $pdfFilePath, string $formDataFilePath, bool $flatten = true): string
     {
@@ -82,11 +83,11 @@ final readonly class PDFtk
      * Reads a single input PDF file and reports form field statistics.
      *
      * @param string $pdfFilePath Filepath to a PDF file
-     * @param bool $utf8 Output is encoded as UTF-8
+     * @param bool   $utf8        Output is encoded as UTF-8
      *
      * @return FieldInterface[]
      *
-     * @throws ProcessFailedException If the process execution is unsuccessful.
+     * @throws ProcessFailedException if the process execution is unsuccessful
      */
     public function dumpDataFields(string $pdfFilePath, bool $utf8 = true): array
     {
@@ -100,9 +101,9 @@ final readonly class PDFtk
 
         $fields = [];
 
-        $fieldsData = explode("---", trim($output));
+        $fieldsData = explode('---', trim($output));
         $fieldsData = array_filter($fieldsData);
-        $fieldsData = explode("---", trim($output));
+        $fieldsData = explode('---', trim($output));
         $fieldsData = array_filter($fieldsData);
         foreach ($fieldsData as $fieldData) {
             $fieldParts = explode("\n", $fieldData);
@@ -110,7 +111,7 @@ final readonly class PDFtk
             /** @var array<string, string|string[]> $parts */
             $parts = ['FieldStateOption' => []];
             foreach ($fieldParts as $fieldPart) {
-                [$fieldPartName, $fieldPartValue] = explode(": ", $fieldPart);
+                [$fieldPartName, $fieldPartValue] = explode(': ', $fieldPart);
 
                 if ('FieldStateOption' !== $fieldPartName) {
                     $parts[$fieldPartName] = $fieldPartValue;
@@ -186,12 +187,12 @@ final readonly class PDFtk
     /**
      * Assembles ("catenates") pages from input PDFs to create a new PDF.
      *
-     * @param string[] $pdfFilePaths Filepath to PDF files.
-     * @param string[] $pageRanges An array of page ranges specifying the pages to concatenate.
+     * @param string[] $pdfFilePaths filepath to PDF files
+     * @param string[] $pageRanges   an array of page ranges specifying the pages to concatenate
      *
      * @return string PDF concatenated from input PDFs
      *
-     * @throws ProcessFailedException If the process execution is unsuccessful.
+     * @throws ProcessFailedException if the process execution is unsuccessful
      */
     public function cat(array $pdfFilePaths, array $pageRanges = []): string
     {
@@ -211,10 +212,9 @@ final readonly class PDFtk
      * Reads a single input PDF file and reports its metadata, bookmarks (outlines), page metrics (media, rotation and labels) and other data.
      *
      * @param string $pdfFilePath Filepath to a PDF file
-     * @param bool $utf8 Output is encoded as UTF-8
+     * @param bool   $utf8        Output is encoded as UTF-8
      *
-     *
-     * @throws ProcessFailedException If the process execution is unsuccessful.
+     * @throws ProcessFailedException if the process execution is unsuccessful
      */
     public function dumpData(string $pdfFilePath, bool $utf8 = true): Report
     {
@@ -357,7 +357,7 @@ final readonly class PDFtk
      *
      * @return string FDF file generated from input PDF
      *
-     * @throws ProcessFailedException If the process execution is unsuccessful.
+     * @throws ProcessFailedException if the process execution is unsuccessful
      */
     public function generateFdf(string $pdfFilePath): string
     {
@@ -371,13 +371,13 @@ final readonly class PDFtk
     /**
      * Splits a single input PDF document into individual pages. Also creates a report named doc_data.txt which is the same as the output from dump_data.
      *
-     * @param string $pdfFilePath Filepath to a PDF file
-     * @param string|null $outputDir Output directory (default: system temp dir)
-     * @param string $pageNamePrefixOutput Prefix for the output page filenames (default: page_)
+     * @param string      $pdfFilePath          Filepath to a PDF file
+     * @param string|null $outputDir            Output directory (default: system temp dir)
+     * @param string      $pageNamePrefixOutput Prefix for the output page filenames (default: page_)
      *
-     * @throws ProcessFailedException If the process execution is unsuccessful.
+     * @throws ProcessFailedException if the process execution is unsuccessful
      */
-    public function burst(string $pdfFilePath, string $outputDir = null, string $pageNamePrefixOutput = 'page_'): void
+    public function burst(string $pdfFilePath, ?string $outputDir = null, string $pageNamePrefixOutput = 'page_'): void
     {
         $executablePath = $this->getExecutablePath();
 
@@ -391,11 +391,11 @@ final readonly class PDFtk
     /**
      * Removes compression from a PDF file to create an uncompressed version.
      *
-     * @param string $pdfFilePath Filepath to the input PDF file to be uncompressed.
+     * @param string $pdfFilePath filepath to the input PDF file to be uncompressed
      *
-     * @return string Uncompressed PDF content.
+     * @return string uncompressed PDF content
      *
-     * @throws ProcessFailedException If the process execution is unsuccessful.
+     * @throws ProcessFailedException if the process execution is unsuccessful
      */
     public function uncompress(string $pdfFilePath): string
     {
@@ -409,11 +409,11 @@ final readonly class PDFtk
     /**
      * Compresses the specified PDF file and returns the compressed output.
      *
-     * @param string $pdfFilePath The file path of the PDF to be compressed.
+     * @param string $pdfFilePath the file path of the PDF to be compressed
      *
-     * @return string The compressed content of the PDF file.
+     * @return string the compressed content of the PDF file
      *
-     * @throws ProcessFailedException If the process execution is unsuccessful.
+     * @throws ProcessFailedException if the process execution is unsuccessful
      */
     public function compress(string $pdfFilePath): string
     {
@@ -427,11 +427,11 @@ final readonly class PDFtk
     /**
      * Repairs the specified PDF file and returns the repaired output.
      *
-     * @param string $pdfFilePath The file path of the PDF to be repaired.
+     * @param string $pdfFilePath the file path of the PDF to be repaired
      *
-     * @return string The repaired content of the PDF file.
+     * @return string the repaired content of the PDF file
      *
-     * @throws ProcessFailedException If the process execution is unsuccessful.
+     * @throws ProcessFailedException if the process execution is unsuccessful
      */
     public function repair(string $pdfFilePath): string
     {
@@ -445,12 +445,12 @@ final readonly class PDFtk
     /**
      * Applies a background PDF to the specified PDF file and returns the resulting output.
      *
-     * @param string $pdfFilePath The file path of the PDF to which the background is to be applied.
-     * @param string $backgroundPdfFilePath The file path of the background PDF to be used.
+     * @param string $pdfFilePath           the file path of the PDF to which the background is to be applied
+     * @param string $backgroundPdfFilePath the file path of the background PDF to be used
      *
-     * @return string The resulting output of the PDF with the background applied.
+     * @return string the resulting output of the PDF with the background applied
      *
-     * @throws ProcessFailedException If the process execution is unsuccessful.
+     * @throws ProcessFailedException if the process execution is unsuccessful
      */
     public function background(string $pdfFilePath, string $backgroundPdfFilePath): string
     {
@@ -464,12 +464,12 @@ final readonly class PDFtk
     /**
      * Applies a stamp to the specified PDF file and returns the stamped output.
      *
-     * @param string $pdfFilePath The file path of the PDF to which the stamp will be applied.
-     * @param string $stampPdfFilePath The file path of the PDF containing the stamp to be applied.
+     * @param string $pdfFilePath      the file path of the PDF to which the stamp will be applied
+     * @param string $stampPdfFilePath the file path of the PDF containing the stamp to be applied
      *
-     * @return string The stamped content of the PDF file.
+     * @return string the stamped content of the PDF file
      *
-     * @throws ProcessFailedException If the process execution is unsuccessful.
+     * @throws ProcessFailedException if the process execution is unsuccessful
      */
     public function stamp(string $pdfFilePath, string $stampPdfFilePath): string
     {
@@ -483,12 +483,12 @@ final readonly class PDFtk
     /**
      * Rotates specified pages of the provided PDF file and returns the output.
      *
-     * @param string $pdfFilePath The file path of the PDF to be processed.
-     * @param array<string> $pageRanges An array of page ranges specifying the pages to rotate.
+     * @param string        $pdfFilePath the file path of the PDF to be processed
+     * @param array<string> $pageRanges  an array of page ranges specifying the pages to rotate
      *
-     * @return string The modified content of the PDF file with rotated pages.
+     * @return string the modified content of the PDF file with rotated pages
      *
-     * @throws ProcessFailedException If the process execution is unsuccessful.
+     * @throws ProcessFailedException if the process execution is unsuccessful
      */
     public function rotate(string $pdfFilePath, array $pageRanges): string
     {
