@@ -103,8 +103,7 @@ final readonly class PDFtk
 
         $fieldsData = explode('---', trim($output));
         $fieldsData = array_filter($fieldsData);
-        $fieldsData = explode('---', trim($output));
-        $fieldsData = array_filter($fieldsData);
+
         foreach ($fieldsData as $fieldData) {
             $fieldParts = explode("\n", $fieldData);
             $fieldParts = array_filter($fieldParts);
