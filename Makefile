@@ -50,4 +50,4 @@ rector: ## Run Rector (dry run)
 rectify: ## Run Rector
 	$(DOCKER_COMPOSE) run --rm php $(RECTOR)
 
-quality: rector cs_check test
+quality: rectify cs_fix test
