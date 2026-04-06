@@ -16,7 +16,7 @@ jobs:
               with:
                   php-version: '8.3'
 
-            - uses: "ramsey/composer-install@v3"
+            - uses: "ramsey/composer-install@v4"
 
             - name: PHP CS Fixer
               run: ./vendor/bin/php-cs-fixer check
@@ -31,7 +31,7 @@ jobs:
               with:
                   php-version: '8.3'
 
-            - uses: "ramsey/composer-install@v3"
+            - uses: "ramsey/composer-install@v4"
               with:
                   working-directory: "tools/rector"
 
@@ -55,7 +55,7 @@ jobs:
               with:
                   php-version: "${{ matrix.php-version }}"
 
-            - uses: "ramsey/composer-install@v3"
+            - uses: "ramsey/composer-install@v4"
               with:
                   composer-options: "--prefer-dist"
 
