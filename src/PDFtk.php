@@ -129,7 +129,6 @@ final readonly class PDFtk
             $name = $parts['FieldName'];
             /** @var string|null $nameAlt */
             $nameAlt = $parts['FieldNameAlt'] ?? null;
-            /** @var int|null $flags */
             $flags = $parts['FieldFlags'] ? (int) $parts['FieldFlags'] : null;
             /** @var string|null $justification */
             $justification = $parts['FieldJustification'] ?? null;
