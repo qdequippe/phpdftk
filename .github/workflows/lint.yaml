@@ -1,0 +1,67 @@
+name: Lint
+
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: 'Setup PHP'
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.3
+
+            - uses: ramsey/composer-install@v4
+
+            - name: PHP CS Fixer
+              run: ./vendor/bin/php-cs-fixer check
+
+    rector:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: 'Setup PHP'
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.3
+
+            - uses: ramsey/composer-install@v4
+              with:
+                  working-directory: "tools/rector"
+
+            - name: Rector
+              run: ./tools/bin/rector --dry-run
+
+    others:
+      name: 🧹 Others Quality Checks
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v6
+
+        - name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: 8.3
+
+        - name: Download dependencies
+          uses: ramsey/composer-install@v4
+
+        - name: Lint Composer config
+          shell: bash
+          run: composer validate
+
+        - name: Check that PSR is respected
+          shell: bash
+          run: composer dump-autoload --dev -o --dry-run --strict-psr
+
+        - name: Check whether a PHP dependency is compromised
+          shell: bash
+          run: composer audit
