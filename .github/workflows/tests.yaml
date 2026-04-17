@@ -14,10 +14,16 @@ jobs:
       matrix:
         include:
           - php: 8.3
+            symfony-version: 7.2.*
+            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+          - php: 8.3
             symfony-version: 7.3.*
             composer-flags: '--prefer-stable --ignore-platform-req=php+'
           - php: 8.3
             symfony-version: 7.4.*
+            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+          - php: 8.4
+            symfony-version: 7.2.*
             composer-flags: '--prefer-stable --ignore-platform-req=php+'
           - php: 8.4
             symfony-version: 7.3.*
