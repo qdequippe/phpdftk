@@ -16,39 +16,40 @@ jobs:
           - php: 8.3
             symfony-version: 7.2.*
             composer-flags: '--prefer-stable --ignore-platform-req=php+'
+            stability: stable
           - php: 8.3
             symfony-version: 7.3.*
-            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+            composer-flags: '--prefer-stable'
           - php: 8.3
             symfony-version: 7.4.*
-            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+            composer-flags: '--prefer-stable'
           - php: 8.4
             symfony-version: 7.2.*
-            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+            composer-flags: '--prefer-stable'
           - php: 8.4
             symfony-version: 7.3.*
-            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+            composer-flags: '--prefer-stable'
           - php: 8.4
             symfony-version: 7.4.*
-            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+            composer-flags: '--prefer-stable'
           - php: 8.4
             symfony-version: 8.0.*
-            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+            composer-flags: '--prefer-stable'
           - php: 8.4
             symfony-version: 8.1.*
-            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+            composer-flags: '--prefer-stable'
           - php: 8.5
             symfony-version: 7.3.*
-            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+            composer-flags: '--prefer-stable'
           - php: 8.5
             symfony-version: 7.4.*
-            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+            composer-flags: '--prefer-stable'
           - php: 8.5
             symfony-version: 8.0.*
-            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+            composer-flags: '--prefer-stable'
           - php: 8.5
             symfony-version: 8.1.*
-            composer-flags: '--prefer-stable --ignore-platform-req=php+'
+            composer-flags: '--prefer-stable'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v6
@@ -58,10 +59,6 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-
-      - name: Configure Composer minimum stability
-        if: matrix.stability
-        run: composer config minimum-stability ${{ matrix.stability }}
 
       - name: Install dependencies
         env:

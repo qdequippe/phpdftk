@@ -39,7 +39,7 @@ jobs:
               run: ./tools/bin/rector --dry-run
 
     others:
-      name: 🧹 Others Quality Checks
+      name: Others Quality Checks
       runs-on: ubuntu-latest
 
       steps:
