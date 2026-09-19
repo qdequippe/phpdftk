@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Qdequippe\PHPDFtk\Field;
 
+/**
+ * @see \Qdequippe\PHPDFtk\Tests\Field\ChoiceTest
+ */
 final class Choice extends Field
 {
     /**
