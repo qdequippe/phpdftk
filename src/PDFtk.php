@@ -17,6 +17,9 @@ use Qdequippe\PHPDFtk\Report\Report;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
+/**
+ * @see \Qdequippe\PHPDFtk\Tests\PDFtkTest
+ */
 final readonly class PDFtk
 {
     public function __construct(

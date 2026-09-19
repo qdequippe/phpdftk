@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Qdequippe\PHPDFtk\Report;
 
+/**
+ * @see \Qdequippe\PHPDFtk\Tests\Report\PageMediaTest
+ */
 final readonly class PageMedia
 {
     private int $number;
