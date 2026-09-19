@@ -18,7 +18,7 @@ use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
 /**
- * @see \Qdequippe\PHPDFtk\Tests\PDFtkTest
+ * @see Tests\PDFtkTest
  */
 final readonly class PDFtk
 {
